@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Brain Stroke Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Brain Stroke Prediction Form</h2>
+        <form action="/predict" method="POST">
+            <label for="patient_name">Patient Name:</label>
+            <input type="text" name="patient_name" required>
+
+            <label for="father_name">Father's Name:</label>
+            <input type="text" name="father_name" required>
+
+            <label for="occupation">Occupation:</label>
+            <input type="text" name="occupation" required>
+
+            <label for="full_address">Full Address:</label>
+            <textarea name="full_address" rows="3" required></textarea>
+
+            <label for="gender">Gender:</label>
+            <select name="gender" required>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+            </select>
+
+            <label for="age">Age:</label>
+            <input type="number" name="age" min="0" max="120" required>
+
+            <label for="hypertension">Hypertension:</label>
+            <select name="hypertension" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+
+            <label for="heart_disease">Heart Disease:</label>
+            <select name="heart_disease" required>
+                <option value="0">No</option>
+                <option value="1">Yes</option>
+            </select>
+
+            <label for="ever_married">Ever Married:</label>
+            <select name="ever_married" required>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+
+            <label for="work_type">Work Type:</label>
+            <select name="work_type" required>
+                <option value="Private">Private</option>
+                <option value="Self-employed">Self-employed</option>
+                <option value="Govt_job">Govt Job</option>
+                <option value="children">Children</option>
+                <option value="Never_worked">Never Worked</option>
+            </select>
+
+            <label for="residence_type">Residence Type:</label>
+            <select name="residence_type" required>
+                <option value="Urban">Urban</option>
+                <option value="Rural">Rural</option>
+            </select>
+
+            <label for="avg_glucose_level">Average Glucose Level:</label>
+            <input type="number" name="avg_glucose_level" min="0" step="any" required>
+
+            <label for="bmi">BMI:</label>
+            <input type="number" name="bmi" min="0" step="any" required>
+
+            <label for="smoking_status">Smoking Status:</label>
+            <select name="smoking_status" required>
+                <option value="formerly smoked">Formerly Smoked</option>
+                <option value="never smoked">Never Smoked</option>
+                <option value="smokes">Smokes</option>
+                <option value="Unknown">Unknown</option>
+            </select>
+
+            <button type="submit">Predict</button>
+        </form>
+
+        {% if prediction_result %}
+            <div style="margin-top: 20px; text-align: center; font-size: 18px; font-weight: bold;">
+                Prediction: 
+                <span style="color: {% if 'High' in prediction_result %}red{% else %}green{% endif %};">
+                    {{ prediction_result }}
+                </span>
+            </div>
+        {% endif %}
+    </div>
+</body>
+</html>

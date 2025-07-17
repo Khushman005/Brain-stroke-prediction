@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Prediction Result</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h2>Prediction Result</h2>
+
+        <p><strong>Patient Name:</strong> {{ patient_name }}</p>
+        <p><strong>Father's Name:</strong> {{ father_name }}</p>
+        <p><strong>Occupation:</strong> {{ occupation }}</p>
+        <p><strong>Address:</strong> {{ full_address }}</p>
+
+        <h3 style="margin-top: 30px;">Stroke Risk: 
+            <span style="color: {% if 'High' in prediction_result %}red{% else %}green{% endif %};">
+                {{ prediction_result }}
+            </span>
+        </h3>
+
+        <br><br>
+        <a href="/" style="text-decoration: none;">
+            <button type="button">Check Another Patient</button>
+        </a>
+    </div>
+</body>
+</html>
