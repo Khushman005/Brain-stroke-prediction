@@ -39,9 +39,12 @@ def predict():
     le_dict = {
         'gender': {'Male': 1, 'Female': 0, 'Other': 2},
         'ever_married': {'Yes': 1, 'No': 0},
-        'work_type': {'Private': 2, 'Self-employed': 3, 'Govt_job': 0, 'children': 1, 'Never_worked': 4},
+        # LabelEncoder encodes categories in alphabetical order during training
+        # ['Govt_job', 'Never_worked', 'Private', 'Self-employed', 'children'] -> [0,1,2,3,4]
+        'work_type': {'Govt_job': 0, 'Never_worked': 1, 'Private': 2, 'Self-employed': 3, 'children': 4},
         'residence_type': {'Urban': 1, 'Rural': 0},
-        'smoking_status': {'formerly smoked': 0, 'never smoked': 1, 'smokes': 2, 'Unknown': 3}
+        # ['Unknown', 'formerly smoked', 'never smoked', 'smokes'] -> [0,1,2,3]
+        'smoking_status': {'Unknown': 0, 'formerly smoked': 1, 'never smoked': 2, 'smokes': 3}
     }
 
     input_encoded = [
@@ -57,15 +60,18 @@ def predict():
         le_dict['smoking_status'][input_features[9]]
     ]
 
-    prediction = model.predict([input_encoded])[0]
-    result = "High Risk of Stroke" if prediction == 1 else "Low Risk of Stroke"
+    proba = float(model.predict_proba([input_encoded])[0][1])
+    threshold = 0.35  # tuneable threshold due to class imbalance
+    prediction = 1 if proba >= threshold else 0
+    result = (f"High Risk of Stroke ({proba*100:.1f}% chance)" if prediction == 1
+              else f"Low Risk of Stroke ({proba*100:.1f}% chance)")
 
-      # Save all info + prediction to CSV
+    # Save all info + encoded inputs + probability + decision to CSV
     with open('patient_predictions.csv', 'a', newline='') as file:
         writer = csv.writer(file)
         writer.writerow([
             patient_name, father_name, occupation, full_address,
-            *input_encoded, result
+            *input_encoded, f"{proba:.6f}", prediction, result
         ])
 
     return render_template("result.html",

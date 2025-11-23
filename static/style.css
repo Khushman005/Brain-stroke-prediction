@@ -84,3 +84,12 @@ h3 {
 span {
     font-weight: bold;
 }
+.high-risk {
+    color: red;
+    font-weight: bold;
+}
+
+.low-risk {
+    color: green;
+    font-weight: bold;
+}
